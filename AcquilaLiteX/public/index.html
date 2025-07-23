@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- HTML 문서가 어떤 형식(버전)인지 선언 → HTML5 사용 -->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <!-- 문자 인코딩: 한글이 깨지지 않도록 UTF-8 설정 -->
+  
+  <title>AquilaLiteX</title>
+  <!-- 웹 브라우저 탭에 표시될 제목 -->
+</head>
+<body>
+  <!-- 페이지 본문 시작 -->
+
+  <h1>🚀 AquilaLiteX - 코인 즐겨찾기</h1>
+  <!-- 사용자에게 보여지는 제목 -->
+
+  <button id="load">시세 조회</button>
+  <!-- 클릭 시 코인 시세를 가져오는 버튼 (jQuery가 연결됨) -->
+
+  <button id="view-favorites">즐겨찾기 목록 보기</button>
+  <!--id="view-favorites" 버튼은 즐겨찾기 목록을 보여주는 역할입니다. -->
+
+  <div id="result"></div>
+  <!-- AJAX로 받아온 코인 목록이 여기에 표시될 예정 -->
+
+  <!-- jQuery 라이브러리를 CDN으로 불러옴 (코드를 간단하게 작성할 수 있게 해주는 도구) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- 우리가 직접 작성한 JS 파일(script.js)을 연결 -->
+  <script src="script.js"></script>
+
+  <!-- 로그인/회원가입 UI -->
+  <div id="auth-area">
+    <h3>회원가입</h3>
+    <input id="reg-username" placeholder="아이디">
+    <input id="reg-password" type="password" placeholder="비밀번호">
+    <button id="register-btn">회원가입</button>
+
+    <h3>로그인</h3>
+    <input id="login-username" placeholder="아이디">
+    <input id="login-password" type="password" placeholder="비밀번호">
+    <button id="login-btn">로그인</button>
+
+    <div id="login-result"></div>
+  </div>
+
+  <button id="view-log">📝 활동 로그 보기</button>
+
+
+
+</body>
+</html>
