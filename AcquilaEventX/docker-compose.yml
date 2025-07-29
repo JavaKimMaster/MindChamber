@@ -1,0 +1,39 @@
+version: '3.8'  # 🔧 Docker Compose 버전 (권장 최신 버전)
+
+services:  # 📦 여러 컨테이너(서비스)를 정의하는 블록
+
+  zookeeper:  # 🧠 Kafka가 의존하는 분산 coordination 서비스 (Kafka 필수 구성요소)
+    image: bitnami/zookeeper:latest  # 🐳 Bitnami에서 제공하는 최신 Zookeeper 이미지 사용
+    container_name: acquilaeventx-zookeeper-1
+    ports:
+      - "2181:2181"  # 📡 Zookeeper 기본 포트 (Kafka와 내부 통신용)
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes  # 🔓 비밀번호 없이 접속 허용 (개발용)
+
+  kafka:  # 📮 Kafka 브로커 서비스 정의
+    image: bitnami/kafka:3.5.1  # 🐳 Bitnami Kafka 최신 버전 이미지 사용, ⛳ 버전 명시도 추천
+    container_name: kafka-1
+    ports:
+      - "9092:9092"  # 🔌 Kafka 외부 접속용 포트 (Spring Boot에서 이 포트로 접속함)
+    environment:
+      - KAFKA_BROKER_ID=1  # 🆔 브로커 ID (클러스터에서 고유 식별자)
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092  # 🔈 컨테이너 내부에서 수신할 주소
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      # 🌍 외부(Spring 앱 등)에 알리는 Kafka 주소 (로컬 테스트 용도)
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181  # 🔗 Zookeeper와 연결 설정
+      - ALLOW_PLAINTEXT_LISTENER=yes  # 🔓 보안 인증 없이 PLAINTEXT 허용 (개발용)
+      # - KAFKA_KRAFT_MODE_ENABLED=no  # ❗ KRaft 모드 명시적으로 끄기
+    depends_on:
+      - zookeeper  # 🕓 Kafka는 Zookeeper가 먼저 실행된 후 실행됨
+
+#  redis:
+#    host: localhost     # 🧠 Redis 서버 주소 (보통 Docker에 띄운 경우 localhost)
+#    port: 6379          # 🔌 Redis 기본 포트
+
+
+  redis:
+    image: redis:7.2
+    container_name: acquilaeventx-redis
+    ports:
+      - "6379:6379"  # 도커 외부에서 접근 가능하게 매핑
+    restart: unless-stopped

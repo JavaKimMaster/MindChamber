@@ -1,0 +1,28 @@
+server:
+  port: 8080           # 🌐 Spring Boot 서버가 실행될 포트 (http://localhost:8080)
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092   # 📨 Kafka 브로커 주소 (Docker로 띄운 경우 이 포트로 연결)
+
+    consumer:
+      group-id: event-consumer-group    # 👥 Kafka Consumer 그룹 ID (같은 그룹은 메시지를 분담 처리함)
+      auto-offset-reset: earliest       # 🔄 메시지 읽기 시작 지점 (earliest: 가능한 가장 오래된 메시지부터)
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 🔑 Kafka 메시지 키를 문자열로 디코딩
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      # 📦 Kafka 메시지 본문(값)을 JSON → 객체로 변환
+      properties:
+        spring.json.trusted.packages: "*" # ✅ 어떤 패키지든 JSON 역직렬화 허용 (보안상 필요한 설정)
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 🔑 Kafka 메시지 키를 문자열로 직렬화
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      # 📦 Kafka 메시지 값을 객체 → JSON으로 직렬화
+
+#  redis:
+#    host: localhost     # 🧠 Redis 서버 주소 (보통 Docker에 띄운 경우 localhost)
+#    port: 6379          # 🔌 Redis 기본 포트
+
+

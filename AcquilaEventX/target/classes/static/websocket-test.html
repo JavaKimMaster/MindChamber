@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>WebSocket 테스트</title>
+</head>
+<body>
+<h1>🔌 WebSocket 연결 상태: <span id="status">연결 안 됨</span></h1>
+<pre id="messages" style="background: #f0f0f0; padding: 10px;"></pre>
+
+<script>
+    const statusSpan = document.getElementById("status");
+    const messagesBox = document.getElementById("messages");
+
+    // WebSocket 서버 주소
+    const ws = new WebSocket("ws://localhost:8080/ws/event");
+
+    ws.onopen = () => {
+        statusSpan.textContent = "✅ 연결됨";
+        statusSpan.style.color = "green";
+    };
+
+    ws.onmessage = (event) => {
+        const msg = event.data;
+        const now = new Date().toLocaleTimeString();
+        messagesBox.textContent += `[${now}] 📩 수신: ${msg}\n`;
+    };
+
+    ws.onclose = () => {
+        statusSpan.textContent = "❌ 연결 종료";
+        statusSpan.style.color = "red";
+    };
+
+    ws.onerror = (err) => {
+        console.error("WebSocket 에러:", err);
+        statusSpan.textContent = "⚠️ 오류 발생";
+        statusSpan.style.color = "orange";
+    };
+</script>
+</body>
+</html>
